@@ -1,27 +1,91 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="refresh" content="1;url=https://www.crazygames.com/t/obby">
-  <meta name="theme-color" content="#10101b">
-  <title>Opening Obby Games</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#101115">
+  <title>Play Roblox</title>
   <style>
-    * { box-sizing: border-box; }
-    body { margin: 0; min-height: 100vh; min-height: 100dvh; display: grid; place-items: center; padding: 24px; background: #10101b; color: #fff; font-family: Arial, sans-serif; text-align: center; }
-    main { max-width: 420px; }
-    h1 { font-size: 28px; }
-    p { color: #c9c9db; line-height: 1.6; }
-    a { display: inline-block; margin-top: 12px; padding: 15px 26px; border-radius: 12px; background: #7048eb; color: #fff; text-decoration: none; font-weight: bold; }
-    a:focus-visible { outline: 3px solid #ffd54f; outline-offset: 4px; }
+    *{box-sizing:border-box} [hidden]{display:none!important}
+    :root{color-scheme:dark;font-family:Arial,Helvetica,sans-serif}
+    body{margin:0;min-height:100vh;min-height:100svh;background:#101115;color:#f9fafb;display:flex;align-items:center;justify-content:center;padding:24px}
+    main{width:100%;max-width:430px;text-align:center;padding:42px 28px 28px;border:1px solid #30323a;border-radius:24px;background:#191b21;box-shadow:0 22px 70px #0004}
+    .icon{height:76px;width:76px;border-radius:21px;margin:0 auto 26px;display:grid;place-items:center;background:#242a38;border:1px solid #394665}
+    .icon svg{width:32px;height:32px;fill:#91b9ff;transform:translateX(3px)}
+    .eyebrow{font-size:11px;letter-spacing:2px;font-weight:700;color:#a9b2c5;text-transform:uppercase;margin:0 0 12px}
+    h1{font-size:38px;letter-spacing:-1.4px;line-height:1.1;margin:0 0 14px}
+    .subtitle{font-size:15px;line-height:1.6;color:#b3b7c2;margin:0 0 30px}
+    .loading{min-height:94px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;margin-bottom:24px}
+    .spinner{width:30px;height:30px;border:3px solid #343a49;border-top-color:#6aa5ff;border-radius:50%;animation:spin .8s linear infinite}
+    .spinner.done{animation:none;border:0;color:#8fe6ae;font-size:28px;line-height:30px}
+    .state{font-size:13px;color:#c0c6d4;margin:0}
+    .track{width:100%;height:4px;background:#323744;border-radius:10px;overflow:hidden}
+    .fill{height:100%;width:0;background:#5795ff;transition:width .1s linear}
+    .button{width:100%;min-height:56px;display:flex;align-items:center;justify-content:center;gap:12px;border:0;border-radius:12px;background:#1764e8;color:white;text-decoration:none;font-size:17px;line-height:1.3;font-weight:700;padding:16px 12px;cursor:pointer;box-shadow:0 5px 20px #0067ff25}
+    .button:hover{background:#2876fa}.button:active{transform:translateY(1px)}.button:focus-visible{outline:3px solid white;outline-offset:5px}
+    .button:disabled{cursor:wait;background:#205dbd;color:#e2eaff}
+    .button svg{width:16px;height:16px;fill:currentColor;flex-shrink:0}
+    .store-note{font-size:12px;line-height:1.6;color:#b3b7c2;margin:16px 0 0;min-height:39px}
+    footer{padding-top:23px;margin-top:18px;border-top:1px solid #30323a;font-size:11px;line-height:1.6;color:#9198a8}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    @media(max-width:360px){body{padding:16px}main{padding:30px 20px 22px}h1{font-size:32px}.button{font-size:15px}}
+    @media(prefers-reduced-motion:reduce){.spinner{animation-duration:2s}.fill{transition:none}}
   </style>
 </head>
 <body>
   <main>
-    <h1>Obby Games</h1>
-    <p>Opening CrazyGames in this tab…<br>If it does not open automatically, press the button below.</p>
-    <a href="https://www.crazygames.com/t/obby">Open Obby Games</a>
+    <div class="icon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M7 3 29 16 7 29Z"/></svg></div>
+    <p class="eyebrow">Ready. Set. Play.</p>
+    <h1>Play Roblox</h1>
+    <p class="subtitle">Your next adventure is one tap away.</p>
+    <div class="loading" aria-live="polite" aria-atomic="true">
+      <div id="spinner" class="spinner" aria-hidden="true"></div>
+      <p id="status" class="state">Loading page…</p>
+      <div id="progress" class="track" role="progressbar" aria-label="Page loading" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div id="fill" class="fill"></div></div>
+    </div>
+    <button id="play" class="button" type="button" disabled><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m6 3 15 9-15 9z"/></svg>Play Roblox</button>
+    <a id="update" class="button" href="amzn://apps/android?initiatePurchaseFlow=true&amp;asin=B0FSTNPJT6" hidden>To play Update Roblox <span aria-hidden="true">↗</span></a>
+    <p id="note" class="store-note">Please wait a moment.</p>
+    <footer>Roblox.<br>Roblox version check is performed.</footer>
+    <noscript><style>.loading,#play,#note{display:none}</style><p>Enable JavaScript for the loading animation.</p><a class="button" href="amzn://apps/android?initiatePurchaseFlow=true&amp;asin=B0FSTNPJT6">Open Amazon Appstore</a><p class="store-note">Opens a purchase page. A payment may be required.</p></noscript>
   </main>
-  <script>window.location.replace('https://www.crazygames.com/t/obby');</script>
+  <script>
+    // Change these values to adjust the automatic loading and button reveal.
+    const LOADING_MS = 4000;
+    const REVEAL_DELAY_MS = 1000;
+    const play = document.getElementById('play');
+    const update = document.getElementById('update');
+    const status = document.getElementById('status');
+    const spinner = document.getElementById('spinner');
+    const progress = document.getElementById('progress');
+    const fill = document.getElementById('fill');
+    const note = document.getElementById('note');
+    let revealed = false;
+    function revealUpdate() {
+      if (revealed) return;
+      revealed = true;
+      const transferFocus = document.activeElement === play;
+      play.hidden = true;
+      update.hidden = false;
+      status.textContent = 'Ready';
+      note.textContent = 'Play.';
+      if (transferFocus) update.focus();
+    }
+    play.addEventListener('click', revealUpdate);
+    const started = performance.now();
+    const timer = setInterval(() => {
+      const percent = Math.min(100, Math.round((performance.now() - started) / LOADING_MS * 100));
+      fill.style.width = percent + '%';
+      progress.setAttribute('aria-valuenow', String(percent));
+      if (percent === 100) {
+        clearInterval(timer);
+        spinner.classList.add('done');
+        spinner.textContent = '✓';
+        status.textContent = 'Page ready';
+        play.disabled = false;
+        setTimeout(revealUpdate, REVEAL_DELAY_MS);
+      }
+    }, 100);
+  </script>
 </body>
 </html>
